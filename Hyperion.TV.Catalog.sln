@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DECD7DEF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hyperion.TV.Catalog.UnitTests", "Tests\Hyperion.TV.Catalog.UnitTests\Hyperion.TV.Catalog.UnitTests.csproj", "{B68D3B2B-D6E1-4631-90A8-8E368681073D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hyperion.TV.Catalog.Domain", "Hyperion.TV.Catalog.Domain\Hyperion.TV.Catalog.Domain.csproj", "{15AAA64A-0EB3-4227-87AA-131FADD47A3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,12 +21,17 @@ Global
 		{B68D3B2B-D6E1-4631-90A8-8E368681073D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B68D3B2B-D6E1-4631-90A8-8E368681073D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B68D3B2B-D6E1-4631-90A8-8E368681073D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15AAA64A-0EB3-4227-87AA-131FADD47A3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15AAA64A-0EB3-4227-87AA-131FADD47A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15AAA64A-0EB3-4227-87AA-131FADD47A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15AAA64A-0EB3-4227-87AA-131FADD47A3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B68D3B2B-D6E1-4631-90A8-8E368681073D} = {DECD7DEF-320B-4EC4-B476-0F56B32CAB61}
+		{15AAA64A-0EB3-4227-87AA-131FADD47A3E} = {74F6D501-AA8C-43B4-99E2-B2C43AB4318B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B27C536-D876-40AD-AA83-BC278C695378}

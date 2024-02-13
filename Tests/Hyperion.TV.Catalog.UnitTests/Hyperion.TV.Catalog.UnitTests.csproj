@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Hyperion.TV.Catalog.Domain\Hyperion.TV.Catalog.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
