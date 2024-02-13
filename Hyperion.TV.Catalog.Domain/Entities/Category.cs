@@ -1,19 +1,23 @@
 ﻿using Hyperion.TV.Catalog.Domain.Exceptions;
-using System.Net.Http.Headers;
+using Hyperion.TV.Catalog.Domain.SeedWork;
 
 namespace Hyperion.TV.Catalog.Domain.Entities;
 
-public class Category
+public class Category: AggregateRoot
 {
-    public Guid Id { get; private set; }
+    #region Properties
+
     public string Name { get; private set; }
     public string Description { get; private set; }
     public bool IsActive { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Category(string name, string description, bool isActive = true)
+    #endregion
+
+    #region Constructor
+
+    public Category(string name, string description, bool isActive = true) : base()
     {
-        Id = Guid.NewGuid();
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -21,6 +25,10 @@ public class Category
 
         Validate();
     }
+
+    #endregion
+
+    #region Methods
 
     public void Update(string name, string? description = null)
     {
@@ -35,13 +43,19 @@ public class Category
         Validate();
     }
 
-    public void Deactivate() { 
+    public void Deactivate()
+    {
         IsActive = false;
         Validate();
     }
 
-    private void Validate() { 
-        if(string.IsNullOrWhiteSpace(Name))
+    #endregion
+
+    #region Validation
+
+    private void Validate()
+    {
+        if (string.IsNullOrWhiteSpace(Name))
             throw new EntityValidationException($"{nameof(Name)} should not be empty or null");
         if (Name.Length < 3)
             throw new EntityValidationException($"{nameof(Name)} should be at least 3 characters long");
@@ -52,4 +66,7 @@ public class Category
         if (Description.Length > 10_000)
             throw new EntityValidationException($"{nameof(Description)} should be less or equal 10.000 characters long");
     }
+
+    #endregion
+
 }
