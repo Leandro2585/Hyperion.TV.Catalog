@@ -3,33 +3,35 @@
 using Hyperion.TV.Catalog.Domain.Entities;
 using Hyperion.TV.Catalog.Domain.Exceptions;
 using System.Xml.Linq;
+using FluentAssertions;
 
 namespace Hyperion.TV.Catalog.UnitTests.Domain.Entities;
 
+[Collection(nameof(CategoryTestFixture))]
 public class CategoryTest
 {
+    private readonly CategoryTestFixture _categoryTestFixture;
+
+    public CategoryTest(CategoryTestFixture categoryTestFixture) => _categoryTestFixture = categoryTestFixture;
+
     [Fact(DisplayName = nameof(Instantiate))]
     [Trait("Domain", "Category - Aggregates")]
     public void Instantiate()
     {
-        var validData = new
-        {
-            Name = "Category Name",
-            Description = "Category Description",
-        };
+        var validCategory = _categoryTestFixture.GetValidCategory();
 
         var datetimeBefore = DateTime.Now;
-        var category = new Category(validData.Name, validData.Description);
+        var category = new Category(validCategory.Name, validCategory.Description);
         var datetimeAfter = DateTime.Now;
 
-        Assert.NotNull(category);
-        Assert.Equal(validData.Name, category.Name);
-        Assert.Equal(validData.Description, category.Description);
-        Assert.NotEqual(default(Guid), category.Id);
-        Assert.NotEqual(default(DateTime), category.CreatedAt);
-        Assert.True(category.CreatedAt > datetimeBefore);
-        Assert.True(category.CreatedAt < datetimeAfter);
-        Assert.True(category.IsActive);
+        category.Should().NotBeNull();
+        category.Name.Should().Be(validCategory.Name);
+        category.Description.Should().Be(validCategory.Description);
+        category.Id.Should().NotBeEmpty();
+        category.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+        (category.CreatedAt > datetimeBefore).Should().BeTrue();
+        (category.CreatedAt < datetimeAfter).Should().BeTrue();
+        (category.IsActive).Should().BeTrue();
     }
 
     [Theory(DisplayName = nameof(InstantiateWithIsActive))]
@@ -48,14 +50,14 @@ public class CategoryTest
         var category = new Category(validData.Name, validData.Description, isActive);
         var datetimeAfter = DateTime.Now;
 
-        Assert.NotNull(category);
-        Assert.Equal(validData.Name, category.Name);
-        Assert.Equal(validData.Description, category.Description);
-        Assert.NotEqual(default(Guid), category.Id);
-        Assert.NotEqual(default(DateTime), category.CreatedAt);
-        Assert.True(category.CreatedAt > datetimeBefore);
-        Assert.True(category.CreatedAt < datetimeAfter);
-        Assert.Equal(isActive, category.IsActive);
+        category.Should().NotBeNull();
+        category.Name.Should().Be(validData.Name);
+        category.Description.Should().Be(validData.Description);
+        category.Id.Should().NotBeEmpty();
+        category.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+        (category.CreatedAt > datetimeBefore).Should().BeTrue();
+        (category.CreatedAt < datetimeAfter).Should().BeTrue();
+        (category.IsActive).Should().Be(isActive);
     }
 
     [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsEmpty))]
@@ -67,8 +69,7 @@ public class CategoryTest
     {
         Action action = () => new Category(name!, "category description");
 
-        var exception = Assert.Throws<EntityValidationException>(action);
-        Assert.Equal("Name should not be empty or null", exception.Message);
+        action.Should().Throw<EntityValidationException>().WithMessage("Name should not be empty or null");
     }
 
     [Fact(DisplayName = nameof(InstantiateErrorWhenDescriptionIsNull))]
@@ -149,12 +150,12 @@ public class CategoryTest
     public void Update()
     {
         var category = new Category("category name", "category description");
-        var newValues = new { Name = "new category name", Description = "new category description" };
+        var categoryWithNewValues = _categoryTestFixture.GetValidCategory();
         
-        category.Update(newValues.Name, newValues.Description);
+        category.Update(categoryWithNewValues.Name, categoryWithNewValues.Description);
     
-        Assert.Equal(newValues.Name, category.Name);
-        Assert.Equal(newValues.Description, category.Description);
+        Assert.Equal(categoryWithNewValues.Name, category.Name);
+        Assert.Equal(categoryWithNewValues.Description, category.Description);
     }
 
     [Fact(DisplayName = nameof(UpdateOnlyName))]
@@ -162,12 +163,12 @@ public class CategoryTest
     public void UpdateOnlyName()
     {
         var category = new Category("category name", "category description");
-        var newValues = new { Name = "new category name" };
+        var newName = _categoryTestFixture.GetValidCategoryName();
         var currentDescription = category.Description;
 
-        category.Update(newValues.Name);
+        category.Update(newName);
          
-        Assert.Equal(newValues.Name, category.Name);
+        Assert.Equal(newName, category.Name);
         Assert.Equal(currentDescription, category.Description);
     }
 
